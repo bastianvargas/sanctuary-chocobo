@@ -23,13 +23,16 @@ class Vehicle(models.Model):
     def can_start(self) -> bool:
         return self.vehicle_type.max_capacity >= self.passengers
 
-    def validate_number_plate(self) -> bool:
+    def validate_number_plate(plate) -> bool:
         response = True
-        plate = self.number_plate.split("-")
-        for p in plate[0]:
-            if p.isdigit():
+        try:
+            plate_split=plate.split("-")
+            for p in plate_split[0]:
+                if p.isdigit():
+                    response = False
+            if not plate_split[1].isdigit() or not plate_split[2].isdigit():
                 response = False
-        if not plate[1].isdigit() or not plate[2].isdigit():
+        except:
             response = False
         return response
 
