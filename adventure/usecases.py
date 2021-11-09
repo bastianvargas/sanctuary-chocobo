@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from adventure import models
+
 from .notifiers import Notifier
 from .repositories import JourneyRepository
 
@@ -24,4 +26,23 @@ class StartJourney:
         return journey
 
     class CantStart(Exception):
+        pass
+
+class StopJourney:
+    def __init__(self, repository: JourneyRepository, notifier: Notifier, journey: models.Journey):
+        self.repository = repository
+        #self.notifier = notifier
+        self.journey = journey
+        
+    def set_params(self, data: dict) -> StopJourney:
+        self.data = data
+        return self
+
+    def execute(self) -> None:
+        if self.journey.start:
+            self.repository.stop_journey(self.journey, self.data['date'])
+        else:
+            raise StopJourney.CantStop("Journey can`t stop because does not exist") 
+
+    class CantStop(Exception):
         pass
