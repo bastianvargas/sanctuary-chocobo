@@ -24,6 +24,7 @@ class Vehicle(models.Model):
         return self.vehicle_type.max_capacity >= self.passengers
 
     def get_distribution(self) -> list:
+        #add validation in case of odd capacity
         count = 0
         row = []
         distribution = []
