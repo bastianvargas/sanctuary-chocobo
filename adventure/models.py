@@ -23,6 +23,22 @@ class Vehicle(models.Model):
     def can_start(self) -> bool:
         return self.vehicle_type.max_capacity >= self.passengers
 
+    def get_distribution(self) -> list:
+        count = 0
+        row = []
+        distribution = []
+        for i in range(int(self.vehicle_type.max_capacity/2)):
+            for j in range(2):
+                if self.passengers > count:
+                    row.append(True)
+                    count +=1
+                else:
+                    row.append(False)
+                    count +=1
+            distribution.append(row)
+            row = []
+        return distribution
+
     def validate_number_plate(plate) -> bool:
         response = True
         try:
